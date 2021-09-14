@@ -11,6 +11,7 @@
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QDir>
+#include <QWindow>
 
 #include "PlotJuggler/transform_function.h"
 #include "transforms/first_derivative.h"
@@ -184,6 +185,12 @@ int main(int argc, char* argv[])
   request.setUrl(QUrl("https://api.github.com/repos/facontidavide/PlotJuggler/releases/latest"));
   manager.get(request);
 
+  auto print_winid =
+    [] (auto& w) {
+      printf("winid: %llu\n", w.winId());
+      fflush(stdout);
+    };
+
   /*
    * You, fearless code reviewer, decided to start a journey into my source code.
    * For your bravery, you deserve to know the truth.
@@ -224,11 +231,13 @@ int main(int argc, char* argv[])
       app.processEvents();
     }
 
+    print_winid(w);
     w.show();
     splash.finish(&w);
     return app.exec();
   }
   MainWindow w(parser);
+  print_winid(w);
   w.show();
   return app.exec();
 }
