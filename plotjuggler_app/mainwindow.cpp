@@ -1096,6 +1096,8 @@ void MainWindow::updateRecentLayoutMenu(QStringList new_filenames)
 
 void MainWindow::deleteAllData()
 {
+  setWindowTitle("PlotJuggler");
+
   forEachWidget([](PlotWidget* plot) { plot->removeAllCurves(); });
 
   _mapped_plot_data.clear();
@@ -1360,6 +1362,8 @@ bool MainWindow::loadDataFromFile(const FileLoadInfo& info)
   updateDataAndReplot(true);
   ui->timeSlider->setRealValue(ui->timeSlider->getMinimum());
 
+  const auto filename = QFileInfo(info.filename).fileName();
+  setWindowTitle(filename);
   return true;
 }
 
@@ -2142,6 +2146,7 @@ void MainWindow::on_pushButtonPlay_toggled(bool checked)
 
 void MainWindow::on_actionClearBuffer_triggered()
 {
+  setWindowTitle("PlotJuggler");
   for (auto& it : _mapped_plot_data.numeric)
   {
     it.second.clear();
